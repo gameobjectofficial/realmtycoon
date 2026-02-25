@@ -8022,7 +8022,7 @@
             // FIX #22: Load only recent messages using query with limit
             async loadRecentMessages() {
                 try {
-                    const chatRef = window.FB.collection(window.FB.db, 'shared_data/chat-messages');
+                    const chatRef = window.FB.collection(window.FB.db, 'shared_data', 'chat-messages');
                     // Query: Order by timestamp descending, limit to MAX_MESSAGES
                     const q = window.FB.query(
                         chatRef,
@@ -8052,8 +8052,8 @@
 
             // FIX #22: Real-time listener for new messages only
             setupRealTimeListener() {
-                const chatRef = window.FB.collection(window.FB.db, 'shared_data/chat-messages');
-                
+                const chatRef = window.FB.collection(window.FB.db, 'shared_data', 'chat-messages');
+
                 // Listen for new messages added after our last loaded message
                 const q = window.FB.query(
                     chatRef,

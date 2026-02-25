@@ -60,9 +60,6 @@ service cloud.firestore {
     match /shared_data/{docId} {
 
       // --- CHAT MESSAGES (Subcollection Architecture) ---
-      // FIX #22: Chat messages are now stored as individual documents in a subcollection
-      // Path: shared_data/chat-messages/{messageId}
-      // Anyone can read, but only authenticated users can write
       match /chat-messages/{messageId} {
         allow read: if true;
         
@@ -82,8 +79,6 @@ service cloud.firestore {
       allow write: if false; // Prevent writes to legacy document
       
       // --- PLAYER INBOX ---
-      // Players can only read/write their own inbox entries
-      // Inbox is a shared doc but entries are filtered by playerId
       allow read: if isAuthenticated() && 
                   docId == 'player-inbox';
       
@@ -93,35 +88,24 @@ service cloud.firestore {
       
       // --- MARKET LISTINGS ---
       // Anyone can read active listings
-      // Only authenticated users can write, but can only modify their own listings
       allow read: if true;
       
-      allow write: if isAuthenticated() && 
+      // Market listings - authenticated users can write
+      // Note: .all() lambda is not supported in Firestore rules.
+      // Server-side validation via Cloud Functions is recommended
+      // for verifying individual listing ownership.
+      allow write: if isAuthenticated() &&
                    docId == 'market-listings' &&
-                   isValidMarketListing() &&
-                   // Verify that user only modifies their own listings
-                   (request.resource.data.value.size() == 0 ||
-                    request.resource.data.value.all((l) => 
-                      l.sellerId == getUserId() || 
-                      (l has_key('buyerId') && l.buyerId == getUserId())
-                    ));
+                   isValidMarketListing();
       
       // --- LEADERBOARD ---
-      // Anyone can read leaderboard
-      // Authenticated users can update but with validation
       allow read: if true;
       
-      allow write: if isAuthenticated() && 
+      allow write: if isAuthenticated() &&
                    docId == 'leaderboard-data' &&
-                   isValidLeaderboardData() &&
-                   // Ensure user can only update their own entry
-                   request.resource.data.value.gold.all((e) => e.playerId == getUserId() || e.playerId != getUserId()) &&
-                   request.resource.data.value.crafts.all((e) => e.playerId == getUserId() || e.playerId != getUserId()) &&
-                   request.resource.data.value.kills.all((e) => e.playerId == getUserId() || e.playerId != getUserId());
+                   isValidLeaderboardData();
       
       // --- TRADES ---
-      // Trade documents: trades_{targetId}_{tradeId}
-      // Only sender and target can read/write
       allow read: if isAuthenticated() && 
                   (docId.startsWith('trades_') && 
                    (resource.data.value.senderId == getUserId() || 
@@ -135,7 +119,6 @@ service cloud.firestore {
                     request.resource.data.value.targetId == getUserId());
       
       // --- PUBLIC PROFILES ---
-      // Anyone can read, only owner can write
       allow read: if true;
       
       allow write: if isAuthenticated() && 
@@ -149,26 +132,17 @@ service cloud.firestore {
     }
     
     // ========================================
-    // RATE LIMITING (Optional - via Cloud Functions)
-    // ========================================
-    // Note: True rate limiting should be done via Cloud Functions
-    // These rules provide basic validation
-    
-    // ========================================
     // DATA VALIDATION HELPERS
     // ========================================
     
-    // Validate that a value is a non-negative number
     function isNonNegativeNumber(val) {
       return val is number && val >= 0;
     }
     
-    // Validate that a value is a positive integer
     function isPositiveInteger(val) {
       return val is number && val == val.floor() && val > 0;
     }
     
-    // Validate string length
     function isValidString(str, minLen, maxLen) {
       return str is string && 
              str.size() >= minLen && 
