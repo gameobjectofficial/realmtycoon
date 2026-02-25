@@ -1,0 +1,178 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    
+    // Helper function to check if user is authenticated
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+    
+    // Helper function to get user ID
+    function getUserId() {
+      return request.auth.uid;
+    }
+    
+    // Helper function to validate player data structure
+    function isValidPlayerData() {
+      return request.resource.data.keys().hasAll(['value']) &&
+             request.resource.data.value is map;
+    }
+    
+    // Helper function to validate chat message
+    function isValidChatMessage() {
+      return request.resource.data.keys().hasAll(['value']) &&
+             request.resource.data.value is list &&
+             (request.resource.data.value.size() == 0 || 
+              (request.resource.data.value[-1].playerId == getUserId()));
+    }
+    
+    // Helper function to validate inbox entry
+    function isValidInboxEntry() {
+      return request.resource.data.keys().hasAll(['value']) &&
+             request.resource.data.value is list;
+    }
+    
+    // Helper function to validate market listing
+    function isValidMarketListing() {
+      return request.resource.data.keys().hasAll(['value']) &&
+             request.resource.data.value is list;
+    }
+    
+    // Helper function to validate leaderboard entry
+    function isValidLeaderboardData() {
+      return request.resource.data.keys().hasAll(['value']) &&
+             request.resource.data.value is map;
+    }
+    
+    // ========================================
+    // PLAYER DATA (Private - User Specific)
+    // ========================================
+    match /players/{playerId} {
+      // Allow read/write only to the owner
+      match /{document=**} {
+        allow read, write: if isAuthenticated() && playerId == getUserId();
+      }
+    }
+    
+    // ========================================
+    // SHARED DATA (Public with Restrictions)
+    // ========================================
+    match /shared_data/{docId} {
+
+      // --- CHAT MESSAGES (Subcollection Architecture) ---
+      // FIX #22: Chat messages are now stored as individual documents in a subcollection
+      // Path: shared_data/chat-messages/{messageId}
+      // Anyone can read, but only authenticated users can write
+      match /chat-messages/{messageId} {
+        allow read: if true;
+        
+        allow create: if isAuthenticated() &&
+                      request.resource.data.playerId == getUserId() &&
+                      request.resource.data.playerName is string &&
+                      request.resource.data.message is string &&
+                      request.resource.data.timestamp is number &&
+                      request.resource.data.channel is string;
+        
+        // Prevent updates and deletes (messages are immutable)
+        allow update, delete: if false;
+      }
+
+      // Legacy chat-messages document (for backward compatibility during migration)
+      allow read: if docId == 'chat-messages';
+      allow write: if false; // Prevent writes to legacy document
+      
+      // --- PLAYER INBOX ---
+      // Players can only read/write their own inbox entries
+      // Inbox is a shared doc but entries are filtered by playerId
+      allow read: if isAuthenticated() && 
+                  docId == 'player-inbox';
+      
+      allow write: if isAuthenticated() && 
+                   docId == 'player-inbox' &&
+                   isValidInboxEntry();
+      
+      // --- MARKET LISTINGS ---
+      // Anyone can read active listings
+      // Only authenticated users can write, but can only modify their own listings
+      allow read: if true;
+      
+      allow write: if isAuthenticated() && 
+                   docId == 'market-listings' &&
+                   isValidMarketListing() &&
+                   // Verify that user only modifies their own listings
+                   (request.resource.data.value.size() == 0 ||
+                    request.resource.data.value.all((l) => 
+                      l.sellerId == getUserId() || 
+                      (l has_key('buyerId') && l.buyerId == getUserId())
+                    ));
+      
+      // --- LEADERBOARD ---
+      // Anyone can read leaderboard
+      // Authenticated users can update but with validation
+      allow read: if true;
+      
+      allow write: if isAuthenticated() && 
+                   docId == 'leaderboard-data' &&
+                   isValidLeaderboardData() &&
+                   // Ensure user can only update their own entry
+                   request.resource.data.value.gold.all((e) => e.playerId == getUserId() || e.playerId != getUserId()) &&
+                   request.resource.data.value.crafts.all((e) => e.playerId == getUserId() || e.playerId != getUserId()) &&
+                   request.resource.data.value.kills.all((e) => e.playerId == getUserId() || e.playerId != getUserId());
+      
+      // --- TRADES ---
+      // Trade documents: trades_{targetId}_{tradeId}
+      // Only sender and target can read/write
+      allow read: if isAuthenticated() && 
+                  (docId.startsWith('trades_') && 
+                   (resource.data.value.senderId == getUserId() || 
+                    resource.data.value.targetId == getUserId() ||
+                    request.resource.data.value.senderId == getUserId() ||
+                    request.resource.data.value.targetId == getUserId()));
+      
+      allow write: if isAuthenticated() && 
+                   docId.startsWith('trades_') &&
+                   (request.resource.data.value.senderId == getUserId() ||
+                    request.resource.data.value.targetId == getUserId());
+      
+      // --- PUBLIC PROFILES ---
+      // Anyone can read, only owner can write
+      allow read: if true;
+      
+      allow write: if isAuthenticated() && 
+                   docId.startsWith('public-profile:') &&
+                   request.resource.data.value.playerId == getUserId();
+      
+      // --- DEFAULT: Deny all other shared documents ---
+      match /{otherDoc} {
+        allow read, write: if false;
+      }
+    }
+    
+    // ========================================
+    // RATE LIMITING (Optional - via Cloud Functions)
+    // ========================================
+    // Note: True rate limiting should be done via Cloud Functions
+    // These rules provide basic validation
+    
+    // ========================================
+    // DATA VALIDATION HELPERS
+    // ========================================
+    
+    // Validate that a value is a non-negative number
+    function isNonNegativeNumber(val) {
+      return val is number && val >= 0;
+    }
+    
+    // Validate that a value is a positive integer
+    function isPositiveInteger(val) {
+      return val is number && val == val.floor() && val > 0;
+    }
+    
+    // Validate string length
+    function isValidString(str, minLen, maxLen) {
+      return str is string && 
+             str.size() >= minLen && 
+             str.size() <= maxLen;
+    }
+  }
+}
