@@ -8022,7 +8022,7 @@
             // FIX #22: Load only recent messages using query with limit
             async loadRecentMessages() {
                 try {
-                    const chatRef = window.FB.collection(window.FB.db, 'shared_data', 'chat-messages');
+                    const chatRef = window.FB.collection(window.FB.db, 'shared_data', 'global', 'chat-messages');
                     // Query: Order by timestamp descending, limit to MAX_MESSAGES
                     const q = window.FB.query(
                         chatRef,
@@ -8052,7 +8052,7 @@
 
             // FIX #22: Real-time listener for new messages only
             setupRealTimeListener() {
-                const chatRef = window.FB.collection(window.FB.db, 'shared_data', 'chat-messages');
+                const chatRef = window.FB.collection(window.FB.db, 'shared_data', 'global', 'chat-messages');
 
                 // Listen for new messages added after our last loaded message
                 const q = window.FB.query(
@@ -8147,7 +8147,7 @@
                     for(let i = 0; i < expiredIds.length; i += batchSize) {
                         const batch = expiredIds.slice(i, i + batchSize);
                         batch.forEach(id => {
-                            const msgRef = window.FB.doc(window.FB.db, `shared_data/chat-messages/${id}`);
+                            const msgRef = window.FB.doc(window.FB.db, `shared_data/global/chat-messages/${id}`);
                             window.FB.deleteDoc(msgRef);
                         });
                     }
@@ -8256,7 +8256,7 @@
                 // This eliminates the need to download entire chat history on every update
                 try {
                     // Save message as individual document in subcollection
-                    const msgRef = window.FB.doc(window.FB.db, `shared_data/chat-messages/${newMsg.id}`);
+                    const msgRef = window.FB.doc(window.FB.db, `shared_data/global/chat-messages/${newMsg.id}`);
                     await window.FB.setDoc(msgRef, newMsg);
 
                     this.markAsRead();
