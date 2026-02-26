@@ -2328,7 +2328,6 @@
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.10.0/firebase-app.js";
         import { getAuth, signInAnonymously, onAuthStateChanged, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut } from "https://www.gstatic.com/firebasejs/10.10.0/firebase-auth.js";
         import { getFirestore, doc, setDoc, getDoc, deleteDoc, updateDoc, collection, getDocs, onSnapshot, query, orderBy, limit, where, runTransaction } from "https://www.gstatic.com/firebasejs/10.10.0/firebase-firestore.js";
-        import { getFunctions, httpsCallable } from "https://www.gstatic.com/firebasejs/10.10.0/firebase-functions.js";
 
         const firebaseConfig = {
             apiKey: "AIzaSyA3DCjL351ezkYpFy4QsBmVz7RR296ltzk",
@@ -2343,14 +2342,11 @@
         const app = initializeApp(firebaseConfig);
         const auth = getAuth(app);
         const db = getFirestore(app);
-        const functions = getFunctions(app, "eu-west1");
 
         // Expose Firebase tools to global scope for our vanilla JS systems to use
         window.FB = {
             auth,
             db,
-            functions,
-            httpsCallable,
             doc,
             setDoc,
             getDoc,
@@ -4254,14 +4250,7 @@
             },
             async set(key, value, shared = false) {
                 if(!this.isReady) return;
-                
-                // Security check: Verify gold integrity before saving player data
-                if(key === 'player-data' && typeof SecuritySys !== 'undefined' && !SecuritySys.verify()) {
-                    console.error("⛔ SECURITY ALERT: Data manipulation detected before save!");
-                    SecuritySys.punishCheater();
-                    return; // Cancel save operation
-                }
-                
+
                 try {
                     let docRef;
                     if(shared) {
@@ -4482,38 +4471,18 @@
 
             // 3. SECURE GOLD ADD (Use instead of direct +=)
             addGold: function(amount) {
-                if (!this.verify()) return this.punishCheater();
-                
                 gameState.player.gold += amount;
                 this._goldSignature = this.generateSignature(gameState.player.gold); // Update signature
             },
 
             // 4. SECURE GOLD SPEND (Use instead of direct -=)
             spendGold: function(amount) {
-                if (!this.verify()) return this.punishCheater();
-
                 if (gameState.player.gold >= amount) {
                     gameState.player.gold -= amount;
                     this._goldSignature = this.generateSignature(gameState.player.gold); // Update signature
                     return true; // Spend successful
                 }
                 return false; // Insufficient gold
-            },
-
-            // 5. VERIFICATION (Is the displayed gold signature correct?)
-            verify: function() {
-                // If current gold signature doesn't match stored signature, cheating detected!
-                return this._goldSignature === this.generateSignature(gameState.player.gold);
-            },
-
-            // 6. PUNISH CHEATER
-            punishCheater: function() {
-                console.error("⛔ SECURITY ALERT: Data manipulation detected!");
-                // Zero out cheater's gold and reset signature
-                gameState.player.gold = 0; 
-                this._goldSignature = this.generateSignature(0);
-                alert("Oyun verilerinde tutarsızlık tespit edildi. Altın miktarınız sıfırlandı!");
-                return false;
             }
         };
 
@@ -9107,36 +9076,13 @@
             },
 
             async resolveTrade(tradeId, targetDocId, isAccept) {
-                // SECURITY FIX: Use Cloud Functions for server-side trade validation
-                // This prevents gold manipulation and ensures fair trades
-                
                 const docId = `trades_${targetDocId}_${tradeId}`;
                 const docRef = window.FB.doc(window.FB.db, `shared_data/${docId}`);
 
                 try {
                     UI.showToast("İşleniyor...", "info");
 
-                    // FIX #5: Enable Cloud Functions for server-side gold verification
-                    if (isAccept) {
-                        try {
-                            // Call Cloud Function for server-side gold verification
-                            const acceptTrade = window.FB.httpsCallable(window.FB.functions, 'acceptTrade');
-                            const result = await acceptTrade({
-                                tradeId: tradeId,
-                                targetId: targetDocId,
-                                reqGold: null // Will be verified server-side
-                            });
-
-                            UI.showToast("Trade Successful!", "success");
-                            this.openIncoming();
-                            return;
-                        } catch (fnError) {
-                            console.error('Cloud Function failed, falling back to client:', fnError);
-                            // Fall through to client-side transaction if Cloud Function unavailable
-                        }
-                    }
-
-                    // Fallback: Client-side transaction (less secure but works offline)
+                    // Client-side transaction for trade resolution
                     await window.FB.runTransaction(window.FB.db, async (transaction) => {
                         const trdDoc = await transaction.get(docRef);
                         if(!trdDoc.exists() || trdDoc.data().value.status !== 'pending') {
