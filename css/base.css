@@ -1,0 +1,107 @@
+/* ===================================
+   BASE STYLES - RESETS & TYPOGRAPHY
+   =================================== */
+
+/* Base Resets */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    background-color: var(--bg-primary);
+    color: var(--text-primary);
+    font-family: var(--font-body);
+    font-size: 16px;
+    line-height: 1.5;
+    overflow: hidden;
+    background-image: radial-gradient(circle at center, #151520 0%, #0a0a0f 100%);
+}
+
+/* Buttons */
+button {
+    cursor: pointer;
+    font-family: var(--font-display);
+    border: var(--border-subtle);
+    background: var(--bg-tertiary);
+    color: var(--text-primary);
+    padding: 8px 16px;
+    border-radius: 4px;
+    transition: var(--transition-smooth);
+    text-transform: uppercase;
+    font-size: 0.9rem;
+    font-weight: 600;
+}
+
+button:hover {
+    background: #252540;
+    border-color: var(--accent-gold);
+    box-shadow: var(--shadow-glow);
+}
+
+button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    border-color: #333;
+}
+
+/* Inputs */
+input {
+    font-family: var(--font-body);
+    background: var(--bg-primary);
+    border: var(--border-subtle);
+    color: var(--text-primary);
+    padding: 8px;
+    border-radius: 4px;
+    outline: none;
+}
+
+input:focus {
+    border-color: var(--accent-gold);
+}
+
+/* Typography */
+h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-display);
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+}
+
+/* Text Utilities */
+.text-gold {
+    color: var(--accent-gold);
+}
+
+.text-mythic {
+    color: var(--rarity-mythic);
+    text-shadow: 0 0 5px rgba(255, 0, 0, 0.8);
+}
+
+.text-secondary {
+    color: var(--text-secondary);
+}
+
+.text-muted {
+    color: var(--text-muted);
+}
+
+/* General Utilities */
+.hidden {
+    display: none !important;
+}
+
+.flex-between {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+/* Card Component */
+.card {
+    background: var(--bg-tertiary);
+    border: var(--border-subtle);
+    padding: 15px;
+    border-radius: 8px;
+    box-shadow: var(--shadow-base);
+}

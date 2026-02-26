@@ -1,0 +1,58 @@
+/* ===================================
+   CSS VARIABLES - DARK FANTASY THEME
+   =================================== */
+
+:root {
+    /* Backgrounds */
+    --bg-primary: #0a0a0f;
+    --bg-secondary: #12121a;
+    --bg-tertiary: #1a1a2e;
+    --bg-panel: rgba(18, 18, 26, 0.85);
+    --bg-overlay: rgba(10, 10, 15, 0.8);
+
+    /* Accents */
+    --accent-gold: #d4a017;
+    --accent-gold-bright: #f0c040;
+    --accent-purple: #6a0dad;
+    --accent-crimson: #8b0000;
+    --accent-success: #00ff88;
+    --accent-warning: #ffaa00;
+    --accent-danger: #ff4444;
+    --accent-info: #00ccff;
+
+    /* Text Colors */
+    --text-primary: #e8e6e3;
+    --text-secondary: #8a8a9a;
+    --text-muted: #5e5e6e;
+
+    /* Rarities */
+    --rarity-common: #9d9d9d;
+    --rarity-uncommon: #1eff00;
+    --rarity-rare: #0070dd;
+    --rarity-epic: #a335ee;
+    --rarity-legendary: #ff8000;
+    --rarity-mythic: #ff0000;
+
+    /* Fonts */
+    --font-display: 'Cinzel', serif;
+    --font-body: 'Crimson Pro', serif;
+
+    /* Borders & Shadows */
+    --border-subtle: 1px solid #2a2a3a;
+    --shadow-base: 0 4px 6px rgba(0, 0, 0, 0.5);
+    --shadow-glow: 0 0 10px rgba(212, 160, 23, 0.3);
+
+    /* Dimensions */
+    --top-bar-h: 50px;
+    --bottom-bar-h: 40px;
+    --left-panel-w: 220px;
+    --right-panel-w: 280px;
+
+    /* Grid & Virtual Scroller */
+    --grid-item-width: 100px;
+    --grid-item-height: 120px;
+    --grid-gap: 12px;
+
+    /* Transitions */
+    --transition-smooth: 0.3s ease;
+}

@@ -1,0 +1,274 @@
+/* ===================================
+   INVENTORY SYSTEM STYLES
+   =================================== */
+
+/* ===========================
+   INVENTORY CONTAINER
+   =========================== */
+
+.inventory-container {
+    width: 100%;
+    max-width: 900px;
+    margin: 0 auto;
+}
+
+.inventory-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+    padding: 15px;
+    background: var(--bg-secondary);
+    border-radius: 8px;
+    border: 1px solid var(--accent-gold);
+}
+
+.inventory-title {
+    font-family: var(--font-display);
+    font-size: 1.5rem;
+    color: var(--accent-gold);
+}
+
+.inventory-count {
+    color: var(--text-secondary);
+    font-size: 1rem;
+}
+
+.inventory-tabs {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 15px;
+    flex-wrap: wrap;
+}
+
+.inv-tab {
+    padding: 10px 20px;
+    border-radius: 8px;
+    background: var(--bg-secondary);
+    border: 1px solid #444;
+    color: var(--text-secondary);
+    cursor: pointer;
+    transition: all 0.2s ease;
+    font-family: var(--font-display);
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.inv-tab:hover {
+    border-color: var(--accent-gold);
+    color: var(--accent-gold);
+}
+
+.inv-tab.active {
+    background: var(--accent-gold);
+    color: black;
+    border-color: var(--accent-gold-bright);
+    box-shadow: 0 0 15px rgba(212, 160, 23, 0.4);
+}
+
+.inventory-filters {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 15px;
+    flex-wrap: wrap;
+}
+
+.filter-select {
+    padding: 8px 15px;
+    background: var(--bg-tertiary);
+    border: 1px solid #444;
+    border-radius: 6px;
+    color: var(--text-primary);
+    font-family: var(--font-body);
+    cursor: pointer;
+    outline: none;
+}
+
+.filter-select:focus {
+    border-color: var(--accent-gold);
+}
+
+/* ===========================
+   INVENTORY GRID
+   =========================== */
+
+.inventory-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(var(--grid-item-width), 1fr));
+    gap: var(--grid-gap);
+    padding: 15px;
+    background: var(--bg-secondary);
+    border-radius: 8px;
+    border: 1px solid #333;
+    min-height: 400px;
+}
+
+.inv-item-card {
+    aspect-ratio: 1;
+    border: 2px solid #444;
+    border-radius: 8px;
+    background: var(--bg-tertiary);
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+}
+
+.inv-item-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: radial-gradient(circle at center, rgba(255, 255, 255, 0.05), transparent);
+    opacity: 0;
+    transition: opacity 0.2s;
+}
+
+.inv-item-card:hover {
+    transform: translateY(-5px) scale(1.05);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+}
+
+.inv-item-card:hover::before {
+    opacity: 1;
+}
+
+.inv-item-card.common {
+    border-color: var(--rarity-common);
+}
+
+.inv-item-card.uncommon {
+    border-color: var(--rarity-uncommon);
+    box-shadow: 0 0 10px rgba(30, 255, 0, 0.2);
+}
+
+.inv-item-card.rare {
+    border-color: var(--rarity-rare);
+    box-shadow: 0 0 15px rgba(0, 112, 221, 0.3);
+}
+
+.inv-item-card.epic {
+    border-color: var(--rarity-epic);
+    box-shadow: 0 0 20px rgba(163, 53, 238, 0.4);
+}
+
+.inv-item-card.legendary {
+    border-color: var(--rarity-legendary);
+    box-shadow: 0 0 25px rgba(255, 128, 0, 0.5);
+}
+
+.inv-item-card.mythic {
+    border-color: var(--rarity-mythic);
+    box-shadow: 0 0 30px rgba(255, 0, 0, 0.6);
+    animation: mythicPulse 2s infinite alternate;
+}
+
+@keyframes mythicPulse {
+    from { box-shadow: 0 0 20px rgba(255, 0, 0, 0.4); }
+    to { box-shadow: 0 0 40px rgba(255, 0, 0, 0.8); }
+}
+
+.inv-item-icon {
+    font-size: 2.5rem;
+    margin-bottom: 5px;
+    z-index: 1;
+}
+
+.inv-item-enchant {
+    font-family: var(--font-display);
+    font-size: 0.9rem;
+    font-weight: bold;
+    color: var(--accent-gold);
+    z-index: 1;
+}
+
+.inv-item-rarity {
+    position: absolute;
+    bottom: 5px;
+    right: 5px;
+    font-size: 0.6rem;
+    text-transform: uppercase;
+    opacity: 0.7;
+    z-index: 1;
+}
+
+/* Selected Item */
+.selected-item {
+    box-shadow: 0 0 20px rgba(212, 160, 23, 0.6) !important;
+    transform: translateY(-6px) !important;
+}
+
+/* ===========================
+   INVENTORY ACTION BAR
+   =========================== */
+
+.inventory-action-bar {
+    display: flex;
+    gap: 10px;
+    margin-top: 15px;
+    padding: 15px;
+    background: var(--bg-secondary);
+    border-radius: 8px;
+    border: 1px solid #444;
+}
+
+.inv-action-btn {
+    flex: 1;
+    padding: 12px;
+    border-radius: 6px;
+    font-weight: bold;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.btn-equip {
+    background: var(--accent-success);
+    color: black;
+    border: 2px solid #00ff88;
+}
+
+.btn-equip:hover {
+    background: #00ff88;
+    box-shadow: 0 0 15px rgba(0, 255, 136, 0.5);
+}
+
+.btn-details {
+    background: var(--accent-info);
+    color: black;
+    border: 2px solid #00ccff;
+}
+
+.btn-details:hover {
+    background: var(--accent-info);
+    box-shadow: 0 0 15px rgba(0, 204, 255, 0.5);
+}
+
+.btn-sell {
+    background: var(--accent-gold);
+    color: black;
+    border: 2px solid var(--accent-gold-bright);
+}
+
+.btn-sell:hover {
+    background: var(--accent-gold-bright);
+    box-shadow: 0 0 15px rgba(240, 192, 64, 0.5);
+}
+
+.btn-discard {
+    background: var(--bg-tertiary);
+    color: var(--text-secondary);
+    border: 2px solid #444;
+}
+
+.btn-discard:hover {
+    background: #333;
+    border-color: #666;
+}

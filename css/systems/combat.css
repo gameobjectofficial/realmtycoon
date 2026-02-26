@@ -1,0 +1,444 @@
+/* ===================================
+   COMBAT SYSTEM STYLES
+   =================================== */
+
+/* ===========================
+   COMBAT ARENA
+   =========================== */
+
+.combat-arena {
+    background: linear-gradient(to bottom, #1a0a0f, #0a0a0f);
+    border: 2px solid var(--accent-crimson);
+    border-radius: 16px;
+    padding: 25px;
+    max-width: 900px;
+    margin: 0 auto;
+    box-shadow: inset 0 0 50px rgba(139, 0, 0, 0.3), 0 0 30px rgba(0, 0, 0, 0.8), 0 0 60px rgba(139, 0, 0, 0.2);
+}
+
+.combat-header {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+/* Battle Field Layout */
+.battle-field {
+    display: grid;
+    grid-template-columns: 1fr 120px 1fr;
+    gap: 15px;
+    align-items: stretch;
+    margin-bottom: 20px;
+}
+
+/* Player & Enemy Panels */
+.player-panel,
+.enemy-panel {
+    background: linear-gradient(to bottom, rgba(20, 20, 30, 0.9), rgba(10, 10, 15, 0.95));
+    border-radius: 12px;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+    transition: all 0.3s ease;
+}
+
+.player-panel {
+    border: 2px solid rgba(0, 200, 100, 0.4);
+    box-shadow: 0 0 20px rgba(0, 200, 100, 0.2), inset 0 0 30px rgba(0, 100, 50, 0.1);
+}
+
+.player-panel:hover {
+    border-color: rgba(0, 255, 136, 0.6);
+    box-shadow: 0 0 30px rgba(0, 255, 136, 0.3), inset 0 0 40px rgba(0, 150, 75, 0.15);
+}
+
+.enemy-panel {
+    border: 2px solid rgba(255, 50, 50, 0.4);
+    box-shadow: 0 0 20px rgba(255, 50, 50, 0.2), inset 0 0 30px rgba(100, 0, 0, 0.1);
+}
+
+.enemy-panel:hover {
+    border-color: rgba(255, 100, 100, 0.6);
+    box-shadow: 0 0 30px rgba(255, 100, 100, 0.3), inset 0 0 40px rgba(150, 0, 0, 0.15);
+}
+
+/* VS Zone */
+.vs-zone {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+}
+
+.vs-circle {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(212, 160, 23, 0.3) 0%, rgba(139, 0, 0, 0.5) 70%);
+    border: 3px solid var(--accent-gold);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-family: var(--font-display);
+    font-size: 1.8rem;
+    font-weight: 800;
+    color: var(--accent-gold);
+    text-shadow: 0 0 10px rgba(212, 160, 23, 0.8);
+    box-shadow: 0 0 30px rgba(212, 160, 23, 0.5), inset 0 0 20px rgba(212, 160, 23, 0.3);
+    animation: vsPulse 2s ease-in-out infinite;
+}
+
+.vs-turn-indicator {
+    margin-top: 10px;
+    font-size: 0.75rem;
+    color: var(--text-secondary);
+    text-transform: uppercase;
+    letter-spacing: 2px;
+}
+
+/* Character Display */
+.character-display {
+    text-align: center;
+    margin: 15px 0;
+    position: relative;
+}
+
+.character-sprite {
+    font-size: 5rem;
+    filter: drop-shadow(0 0 15px currentColor);
+    transition: all 0.3s ease;
+    display: inline-block;
+}
+
+.player-panel .character-sprite {
+    color: rgba(0, 255, 136, 0.5);
+}
+
+.enemy-panel .character-sprite {
+    color: rgba(255, 50, 50, 0.5);
+    filter: drop-shadow(0 0 20px rgba(255, 0, 0, 0.6));
+}
+
+.character-name {
+    font-family: var(--font-display);
+    font-size: 1.1rem;
+    font-weight: 700;
+    margin: 10px 0 5px;
+    color: var(--accent-gold);
+}
+
+.character-level {
+    display: inline-block;
+    background: rgba(212, 160, 23, 0.15);
+    border: 1px solid var(--accent-gold);
+    border-radius: 8px;
+    padding: 2px 10px;
+    font-size: 0.8rem;
+    color: var(--accent-gold);
+    font-family: var(--font-display);
+}
+
+.enemy-ability-icon {
+    position: absolute;
+    top: -5px;
+    right: -5px;
+    font-size: 2rem;
+    cursor: help;
+    filter: drop-shadow(0 0 10px rgba(255, 170, 0, 0.6));
+    animation: abilityGlow 1.5s ease-in-out infinite;
+}
+
+/* Stats Panel */
+.stats-panel {
+    width: 100%;
+    background: rgba(0, 0, 0, 0.3);
+    border-radius: 8px;
+    padding: 12px;
+    margin-top: 15px;
+    border: 1px solid #333;
+}
+
+.stats-row {
+    display: flex;
+    justify-content: space-around;
+    font-size: 0.9rem;
+    font-weight: 600;
+}
+
+.stat-item {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.stat-icon {
+    font-size: 1.1rem;
+}
+
+/* Equipment Display */
+.equipment-display {
+    display: flex;
+    gap: 8px;
+    justify-content: center;
+    margin-top: 10px;
+    font-size: 1.2rem;
+}
+
+.equip-item {
+    width: 32px;
+    height: 32px;
+    background: rgba(212, 160, 23, 0.1);
+    border: 1px solid rgba(212, 160, 23, 0.3);
+    border-radius: 6px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 1rem;
+}
+
+/* Health Bars */
+.health-bar-container {
+    width: 100%;
+    height: 28px;
+    background: var(--bg-primary);
+    border-radius: 14px;
+    overflow: hidden;
+    border: 2px solid #444;
+    position: relative;
+    margin: 10px 0;
+    box-shadow: inset 0 2px 10px rgba(0, 0, 0, 0.5);
+}
+
+.health-bar-fill {
+    height: 100%;
+    transition: width 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+}
+
+.health-bar-fill.enemy-hp {
+    background: linear-gradient(to right, #8b0000, #ff4444, #ff6666);
+    box-shadow: 0 0 15px rgba(255, 68, 68, 0.6);
+}
+
+.health-bar-fill.hero-hp {
+    background: linear-gradient(to right, #006600, #00cc44, #00ff88);
+    box-shadow: 0 0 15px rgba(0, 204, 68, 0.6);
+}
+
+.health-bar-text {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-family: var(--font-display);
+    font-size: 0.85rem;
+    font-weight: bold;
+    text-shadow: 0 0 5px rgba(0, 0, 0, 0.8), 0 0 10px rgba(0, 0, 0, 0.5);
+    z-index: 2;
+    white-space: nowrap;
+}
+
+/* Combat Actions */
+.combat-actions {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 10px;
+    margin-top: 15px;
+    margin-bottom: 15px;
+}
+
+.combat-btn {
+    padding: 14px 8px;
+    border-radius: 10px;
+    font-size: 0.85rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    transition: all 0.2s ease;
+    position: relative;
+    overflow: hidden;
+    cursor: pointer;
+}
+
+.combat-btn::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.15), transparent);
+    transform: rotate(45deg);
+    transition: left 0.5s ease;
+}
+
+.combat-btn:hover::before {
+    left: 100%;
+}
+
+.combat-btn small {
+    display: block;
+    margin-top: 4px;
+    font-size: 0.65rem;
+    opacity: 0.75;
+    font-weight: 400;
+    letter-spacing: 0.5px;
+}
+
+/* Attack Type Buttons */
+.btn-quick {
+    background: linear-gradient(to bottom, #0066aa, #004477);
+    border: 2px solid #00ccff;
+    color: white;
+    box-shadow: 0 4px 15px rgba(0, 150, 255, 0.4);
+}
+
+.btn-quick:hover {
+    background: linear-gradient(to bottom, #0088cc, #0066aa);
+    box-shadow: 0 6px 20px rgba(0, 180, 255, 0.6);
+    transform: translateY(-2px);
+}
+
+.btn-normal {
+    background: linear-gradient(to bottom, #6a1b9a, #4a1478);
+    border: 2px solid #ab47bc;
+    color: white;
+    box-shadow: 0 4px 15px rgba(150, 50, 200, 0.4);
+}
+
+.btn-normal:hover {
+    background: linear-gradient(to bottom, #8e24aa, #6a1b9a);
+    box-shadow: 0 6px 20px rgba(170, 50, 200, 0.6);
+    transform: translateY(-2px);
+}
+
+.btn-heavy {
+    background: linear-gradient(to bottom, #c62828, #8e1a1a);
+    border: 2px solid #ef5350;
+    color: white;
+    box-shadow: 0 4px 15px rgba(255, 50, 50, 0.4);
+}
+
+.btn-heavy:hover {
+    background: linear-gradient(to bottom, #d32f2f, #c62828);
+    box-shadow: 0 6px 20px rgba(255, 80, 80, 0.6);
+    transform: translateY(-2px);
+}
+
+.btn-defend {
+    background: linear-gradient(to bottom, #1b5e20, #0d3d12);
+    border: 2px solid #4caf50;
+    color: white;
+    box-shadow: 0 4px 15px rgba(50, 200, 50, 0.4);
+}
+
+.btn-defend:hover {
+    background: linear-gradient(to bottom, #2e7d32, #1b5e20);
+    box-shadow: 0 6px 20px rgba(80, 220, 80, 0.6);
+    transform: translateY(-2px);
+}
+
+.btn-flee {
+    background: linear-gradient(to bottom, #424242, #212121);
+    border: 2px solid #757575;
+    color: #bdbdbd;
+    box-shadow: 0 4px 15px rgba(100, 100, 100, 0.3);
+}
+
+.btn-flee:hover {
+    background: linear-gradient(to bottom, #616161, #424242);
+    box-shadow: 0 6px 20px rgba(150, 150, 150, 0.5);
+    transform: translateY(-2px);
+    color: white;
+}
+
+/* Combat Log */
+.combat-log {
+    background: rgba(0, 0, 0, 0.4);
+    border: 1px solid #333;
+    border-radius: 8px;
+    padding: 12px;
+    margin-top: 15px;
+    max-height: 140px;
+    overflow-y: auto;
+    font-size: 0.85rem;
+    box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.5);
+}
+
+.combat-log-entry {
+    padding: 5px 0;
+    border-bottom: 1px solid rgba(50, 50, 50, 0.5);
+}
+
+.combat-log-entry:last-child {
+    border-bottom: none;
+}
+
+.log-crit {
+    color: var(--accent-gold-bright);
+    font-weight: bold;
+    text-shadow: 0 0 8px rgba(255, 200, 50, 0.5);
+}
+
+.log-power {
+    color: var(--rarity-mythic);
+    font-weight: bold;
+    text-shadow: 0 0 10px rgba(255, 0, 0, 0.6);
+}
+
+.log-damage {
+    color: #ff6666;
+}
+
+.log-heal {
+    color: var(--accent-success);
+}
+
+.log-info {
+    color: var(--text-secondary);
+}
+
+.log-turn {
+    color: var(--accent-gold);
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+/* Combat Button States */
+.combat-btn.locked {
+    opacity: 0.38;
+    pointer-events: none !important;
+    cursor: not-allowed;
+}
+
+.diff-nightmare {
+    border-color: var(--rarity-mythic);
+    background: rgba(139, 0, 0, 0.1);
+}
+
+/* Equipment Slot */
+.equip-slot {
+    border: 2px dashed #444;
+    border-radius: 6px;
+    padding: 10px;
+    text-align: center;
+    min-height: 70px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: border-color 0.2s;
+}
+
+.equip-slot:hover {
+    border-color: var(--accent-gold);
+}
+
+.equip-slot.filled {
+    border-style: solid;
+    background: var(--bg-primary);
+}

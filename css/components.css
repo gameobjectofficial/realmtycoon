@@ -1,0 +1,768 @@
+/* ===================================
+   COMPONENT STYLES
+   =================================== */
+
+/* ===========================
+   MODAL COMPONENTS
+   =========================== */
+
+/* Upgrade Modal Styles */
+.upgrade-modal-container {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.upgrade-modal-title {
+    text-align: center;
+    font-family: var(--font-display);
+    font-size: 1.5rem;
+    color: var(--accent-gold);
+    margin-bottom: 10px;
+}
+
+.upgrade-compare-grid {
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    gap: 25px;
+    align-items: center;
+    margin: 25px 0;
+}
+
+.upgrade-box {
+    background: var(--bg-secondary);
+    border: 2px solid #444;
+    border-radius: 12px;
+    padding: 25px;
+    min-height: 200px;
+}
+
+.upgrade-box.current {
+    border-color: var(--text-secondary);
+    background: linear-gradient(135deg, rgba(30, 30, 40, 0.8), rgba(20, 20, 30, 0.9));
+}
+
+.upgrade-box.next {
+    border-color: var(--accent-gold);
+    background: linear-gradient(135deg, rgba(40, 35, 20, 0.8), rgba(30, 25, 15, 0.9));
+    box-shadow: 0 0 20px rgba(212, 160, 23, 0.2);
+}
+
+.upgrade-box-title {
+    font-family: var(--font-display);
+    font-size: 1.1rem;
+    font-weight: 700;
+    text-align: center;
+    margin-bottom: 15px;
+    color: var(--text-primary);
+}
+
+.upgrade-box.current .upgrade-box-title {
+    color: var(--text-secondary);
+}
+
+.upgrade-box.next .upgrade-box-title {
+    color: var(--accent-gold);
+}
+
+.upgrade-stat-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 8px 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    font-size: 0.9rem;
+}
+
+.upgrade-stat-row:last-child {
+    border-bottom: none;
+}
+
+.upgrade-stat-label {
+    color: var(--text-secondary);
+}
+
+.upgrade-stat-value {
+    font-weight: 600;
+    color: var(--text-primary);
+}
+
+.upgrade-box.next .upgrade-stat-value {
+    color: var(--accent-gold);
+}
+
+.upgrade-stat-increase {
+    color: var(--rarity-uncommon);
+    font-weight: 700;
+}
+
+.upgrade-arrow {
+    font-size: 2.5rem;
+    color: var(--accent-gold);
+    text-align: center;
+    animation: arrowPulse 1.5s ease-in-out infinite;
+}
+
+.upgrade-cost-section {
+    background: var(--bg-primary);
+    border: 1px solid #444;
+    border-radius: 8px;
+    padding: 15px;
+    margin: 15px 0;
+}
+
+.upgrade-cost-title {
+    font-family: var(--font-display);
+    font-size: 1rem;
+    color: var(--text-secondary);
+    margin-bottom: 10px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.upgrade-cost-item {
+    display: flex;
+    justify-content: space-between;
+    padding: 6px 0;
+    font-size: 0.95rem;
+}
+
+.upgrade-cost-item.can-afford {
+    color: var(--text-primary);
+}
+
+.upgrade-cost-item.cannot-afford {
+    color: var(--rarity-mythic);
+}
+
+.upgrade-actions {
+    display: flex;
+    gap: 15px;
+    margin-top: 20px;
+}
+
+.upgrade-actions button {
+    flex: 1;
+    padding: 15px;
+    font-size: 1.1rem;
+}
+
+.btn-upgrade-confirm {
+    background: var(--accent-gold) !important;
+    color: black !important;
+    font-weight: 700;
+}
+
+.btn-upgrade-confirm:hover {
+    background: var(--accent-gold-bright) !important;
+    box-shadow: 0 0 20px rgba(212, 160, 23, 0.5);
+}
+
+/* ===========================
+   CHEST OPENING COMPONENTS
+   =========================== */
+
+.chest-opening-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+    max-width: 500px;
+    margin: 0 auto;
+}
+
+.chest-opening-header {
+    margin-bottom: 30px;
+}
+
+.chest-opening-stage {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+}
+
+.chest-visual {
+    animation: chestGlow 1s ease-in-out infinite;
+    margin-bottom: 30px;
+}
+
+.chest-visual.legendary {
+    filter: drop-shadow(0 0 50px #ffd700) hue-rotate(20deg);
+    animation: chestGlow 0.8s ease-in-out infinite;
+}
+
+.chest-progress-bar {
+    width: 100%;
+    height: 12px;
+    background: var(--bg-primary);
+    border-radius: 6px;
+    overflow: hidden;
+    border: 2px solid #444;
+    margin-bottom: 15px;
+}
+
+.chest-progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--accent-gold), var(--accent-gold-bright));
+    width: 0%;
+    transition: width 0.1s linear;
+    box-shadow: 0 0 10px var(--accent-gold);
+}
+
+.chest-status-text {
+    color: var(--text-secondary);
+    font-size: 1rem;
+    font-family: var(--font-display);
+}
+
+.chest-opened-header {
+    font-family: var(--font-display);
+    font-size: 1.8rem;
+    font-weight: 800;
+    text-align: center;
+    margin-bottom: 25px;
+    animation: rewardFadeIn 0.5s ease forwards;
+}
+
+.chest-rewards-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(80px, 1fr));
+    gap: 10px;
+    width: 100%;
+    margin-bottom: 20px;
+}
+
+.chest-reward-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 12px 8px;
+    background: var(--bg-secondary);
+    border-radius: 8px;
+    border: 1px solid #444;
+    animation: rewardFadeIn 0.5s ease forwards;
+    opacity: 0;
+    min-width: 80px;
+}
+
+.chest-reward-item .reward-icon {
+    font-size: 1.8rem;
+    margin-bottom: 6px;
+}
+
+.chest-reward-item .reward-amount {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 0.95rem;
+    margin-bottom: 3px;
+}
+
+.chest-reward-item .reward-label {
+    font-size: 0.7rem;
+    color: var(--text-secondary);
+}
+
+.chest-items-section {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    justify-content: center;
+    width: 100%;
+    padding: 15px;
+    background: var(--bg-primary);
+    border-radius: 8px;
+    border: 1px solid #444;
+    margin-top: 10px;
+}
+
+.chest-item-card {
+    background: var(--bg-tertiary);
+    border: 2px solid;
+    border-radius: 8px;
+    padding: 12px;
+    width: 120px;
+    text-align: center;
+    animation: rewardFadeIn 0.5s ease forwards;
+    opacity: 0;
+    position: relative;
+}
+
+.chest-item-card .item-rarity-badge {
+    position: absolute;
+    top: -8px;
+    left: 50%;
+    transform: translateX(-50%);
+    padding: 2px 8px;
+    border-radius: 10px;
+    font-size: 0.6rem;
+    font-family: var(--font-display);
+    font-weight: 700;
+    color: white;
+    text-transform: uppercase;
+}
+
+.chest-item-card .item-icon {
+    font-size: 2rem;
+    margin: 8px 0 5px;
+}
+
+.chest-item-card .item-name {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 0.8rem;
+    margin-bottom: 3px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.chest-item-card .item-type {
+    font-size: 0.65rem;
+    color: var(--text-secondary);
+}
+
+.chest-actions {
+    width: 100%;
+    margin-top: 20px;
+}
+
+.chest-details-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+}
+
+.chest-details-icon {
+    animation: chestGlow 2s ease-in-out infinite;
+}
+
+.chest-details-actions {
+    display: flex;
+    gap: 15px;
+    width: 100%;
+    margin-top: 20px;
+}
+
+.fade-in {
+    animation: rewardFadeIn 0.5s ease forwards;
+}
+
+/* ===========================
+   CRAFTING COMPONENTS
+   =========================== */
+
+.craft-reveal-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 300px;
+    text-align: center;
+}
+
+.craft-silhouette {
+    width: 120px;
+    height: 160px;
+    background: #000;
+    border-radius: 8px;
+    margin: 20px auto;
+    animation: pulseGlow 1.5s infinite;
+    border: 2px dashed #444;
+}
+
+.craft-reveal-item {
+    animation: scaleUpReveal 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+}
+
+.crafting-progress-bar {
+    width: 100%;
+    height: 8px;
+    background: var(--bg-primary);
+    border-radius: 4px;
+    overflow: hidden;
+    margin-top: 10px;
+    border: var(--border-subtle);
+}
+
+.crafting-progress-fill {
+    height: 100%;
+    background: var(--accent-gold);
+    width: 0%;
+    transition: width 1s linear;
+}
+
+/* ===========================
+   ITEM CARD COMPONENTS
+   =========================== */
+
+.item-card {
+    border: 2px solid #444;
+    border-radius: 6px;
+    overflow: hidden;
+    position: relative;
+    cursor: pointer;
+    transition: transform 0.2s, box-shadow 0.2s;
+    background: var(--bg-tertiary);
+    display: flex;
+    flex-direction: column;
+}
+
+.item-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+}
+
+.item-card-pattern {
+    height: 80px;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 2.5rem;
+    text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.8);
+}
+
+.item-card-body {
+    padding: 8px;
+    font-size: 0.85rem;
+}
+
+.item-card-title {
+    font-family: var(--font-display);
+    font-weight: bold;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    margin-bottom: 4px;
+}
+
+.mythic-glow {
+    animation: pulseGlow 2s infinite alternate;
+    border-color: var(--rarity-mythic) !important;
+}
+
+/* ===========================
+   FLOATING DAMAGE NUMBERS
+   =========================== */
+
+.damage-float {
+    position: absolute;
+    font-family: var(--font-display);
+    font-weight: 800;
+    pointer-events: none;
+    animation: floatUp 0.9s ease-out forwards;
+    z-index: 50;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.9);
+}
+
+.damage-float.normal {
+    color: #fff;
+    font-size: 1.4rem;
+}
+
+.damage-float.crit {
+    color: var(--accent-gold-bright);
+    font-size: 2rem;
+}
+
+.damage-float.power {
+    color: var(--rarity-mythic);
+    font-size: 2.4rem;
+}
+
+/* ===========================
+   TOWN BUILDING COMPONENTS
+   =========================== */
+
+.town-building {
+    position: relative;
+    background: rgba(0, 0, 0, 0.4);
+    border: 2px solid #444;
+    border-radius: 8px;
+    padding: 20px 10px;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+}
+
+.town-building:hover {
+    transform: translateY(-10px) scale(1.05);
+    border-color: var(--accent-gold);
+    box-shadow: 0 10px 25px rgba(212, 160, 23, 0.3);
+    background: rgba(30, 30, 30, 0.8);
+}
+
+.town-building::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 30%;
+    background: linear-gradient(to bottom, rgba(255, 255, 255, 0.05), transparent);
+    pointer-events: none;
+}
+
+.b-icon {
+    font-size: 3.5rem;
+    margin-bottom: 15px;
+    filter: drop-shadow(0 5px 5px rgba(0, 0, 0, 0.8));
+    transition: transform 0.3s;
+}
+
+.town-building:hover .b-icon {
+    transform: scale(1.1);
+}
+
+.b-name {
+    font-family: var(--font-display);
+    font-size: 1.1rem;
+    color: var(--text-primary);
+    font-weight: bold;
+    margin-bottom: 5px;
+    z-index: 1;
+}
+
+.b-level {
+    font-size: 0.85rem;
+    color: var(--accent-gold);
+    background: rgba(0, 0, 0, 0.8);
+    padding: 3px 10px;
+    border-radius: 12px;
+    border: 1px solid var(--accent-gold);
+    z-index: 1;
+}
+
+/* Building Tiers */
+.tier-1 {
+    border-bottom: 4px solid #888;
+}
+
+.tier-2 {
+    border-bottom: 4px solid var(--rarity-uncommon);
+}
+
+.tier-3 {
+    border-bottom: 4px solid var(--rarity-rare);
+}
+
+.tier-4 {
+    border-bottom: 4px solid var(--rarity-epic);
+}
+
+.tier-5 {
+    border-bottom: 5px solid var(--rarity-mythic);
+    box-shadow: inset 0 0 20px rgba(255, 0, 0, 0.2);
+}
+
+/* ===========================
+   CATEGORY SELECTION
+   =========================== */
+
+.category-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 25px;
+    padding: 20px;
+    margin-top: 20px;
+}
+
+.category-card {
+    position: relative;
+    background: linear-gradient(135deg, rgba(30, 30, 40, 0.9), rgba(15, 15, 25, 0.95));
+    border: 2px solid #444;
+    border-radius: 16px;
+    padding: 30px 25px;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    min-height: 220px;
+}
+
+.category-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: radial-gradient(circle at top right, rgba(255, 255, 255, 0.08), transparent 60%);
+    pointer-events: none;
+    opacity: 0.5;
+}
+
+.category-card::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: currentColor;
+    opacity: 0.7;
+}
+
+.category-card:hover {
+    transform: translateY(-8px) scale(1.03);
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5), 0 0 30px rgba(212, 160, 23, 0.2);
+    background: linear-gradient(135deg, rgba(35, 35, 50, 0.95), rgba(20, 20, 35, 0.98));
+}
+
+.category-icon {
+    font-size: 4.5rem;
+    margin-bottom: 20px;
+    filter: drop-shadow(0 5px 10px rgba(0, 0, 0, 0.8));
+    transition: transform 0.3s;
+}
+
+.category-card:hover .category-icon {
+    transform: scale(1.15) rotate(5deg);
+}
+
+.category-name {
+    font-family: var(--font-display);
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin-bottom: 12px;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.8);
+}
+
+.category-desc {
+    font-size: 0.95rem;
+    color: var(--text-secondary);
+    margin-bottom: 15px;
+    line-height: 1.4;
+}
+
+.category-count {
+    font-size: 0.85rem;
+    color: var(--accent-gold);
+    background: rgba(212, 160, 23, 0.15);
+    padding: 5px 15px;
+    border-radius: 20px;
+    border: 1px solid rgba(212, 160, 23, 0.4);
+    font-family: var(--font-display);
+    font-weight: 600;
+    letter-spacing: 0.5px;
+}
+
+/* ===========================
+   QUEST & LEADERBOARD
+   =========================== */
+
+.quest-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 12px;
+    border-radius: 6px;
+    background: var(--bg-secondary);
+    margin-bottom: 8px;
+    border-left: 3px solid #444;
+}
+
+.quest-item.done {
+    border-left-color: var(--rarity-uncommon);
+    opacity: 0.7;
+}
+
+.quest-item.active {
+    border-left-color: var(--accent-gold);
+}
+
+.lb-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 8px 12px;
+    border-bottom: var(--border-subtle);
+    font-size: 0.9rem;
+}
+
+.lb-row.me {
+    background: rgba(212, 160, 23, 0.1);
+    border-radius: 4px;
+}
+
+.lb-rank {
+    font-family: var(--font-display);
+    font-weight: bold;
+    min-width: 30px;
+}
+
+.lb-tabs {
+    display: flex;
+    gap: 5px;
+    margin-bottom: 15px;
+}
+
+.lb-tab {
+    padding: 6px 14px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 0.85rem;
+}
+
+.lb-tab.active {
+    background: var(--accent-gold);
+    color: black;
+}
+
+/* Floating Action Button */
+.chat-fab {
+    position: fixed;
+    bottom: 80px;
+    right: 25px;
+    width: 65px;
+    height: 65px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--accent-gold), var(--accent-gold-bright));
+    border: 3px solid #fff;
+    box-shadow: 0 4px 20px rgba(212, 160, 23, 0.5), 0 0 30px rgba(212, 160, 23, 0.3);
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 1.8rem;
+    z-index: 998;
+    transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    animation: fabPulse 2s ease-in-out infinite;
+}
+
+.chat-fab:hover {
+    transform: scale(1.15);
+    box-shadow: 0 6px 30px rgba(212, 160, 23, 0.7), 0 0 40px rgba(212, 160, 23, 0.5);
+    animation: none;
+}
+
+.chat-fab:active {
+    transform: scale(0.95);
+}
+
+.chat-fab-badge {
+    position: absolute;
+    top: -5px;
+    right: -5px;
+    background: var(--accent-danger);
+    color: white;
+    font-size: 0.75rem;
+    font-weight: bold;
+    padding: 3px 7px;
+    border-radius: 10px;
+    min-width: 22px;
+    text-align: center;
+    box-shadow: 0 0 10px rgba(255, 68, 68, 0.6);
+    border: 2px solid #fff;
+}

@@ -1,0 +1,298 @@
+/* ===================================
+   CHAT SYSTEM STYLES
+   =================================== */
+
+/* ===========================
+   CHAT FLOATING ACTION BUTTON
+   =========================== */
+
+.chat-fab {
+    position: fixed;
+    bottom: 80px;
+    right: 25px;
+    width: 65px;
+    height: 65px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--accent-gold), var(--accent-gold-bright));
+    border: 3px solid #fff;
+    box-shadow: 0 4px 20px rgba(212, 160, 23, 0.5), 0 0 30px rgba(212, 160, 23, 0.3);
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 1.8rem;
+    z-index: 998;
+    transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    animation: fabPulse 2s ease-in-out infinite;
+}
+
+.chat-fab:hover {
+    transform: scale(1.15);
+    box-shadow: 0 6px 30px rgba(212, 160, 23, 0.7), 0 0 40px rgba(212, 160, 23, 0.5);
+    animation: none;
+}
+
+.chat-fab:active {
+    transform: scale(0.95);
+}
+
+.chat-fab-badge {
+    position: absolute;
+    top: -5px;
+    right: -5px;
+    background: var(--accent-danger);
+    color: white;
+    font-size: 0.75rem;
+    font-weight: bold;
+    padding: 3px 7px;
+    border-radius: 10px;
+    min-width: 22px;
+    text-align: center;
+    box-shadow: 0 0 10px rgba(255, 68, 68, 0.6);
+    border: 2px solid #fff;
+}
+
+/* ===========================
+   CHAT SIDE PANEL
+   =========================== */
+
+.chat-panel-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.6);
+    z-index: 998;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s ease;
+}
+
+.chat-panel-overlay.active {
+    opacity: 1;
+    visibility: visible;
+}
+
+.chat-side-panel {
+    position: fixed;
+    top: 0;
+    right: -420px;
+    width: 400px;
+    max-width: 90vw;
+    height: 100vh;
+    background: var(--bg-secondary);
+    border-left: 3px solid var(--accent-gold);
+    z-index: 999;
+    transition: right 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: -10px 0 50px rgba(0, 0, 0, 0.8), -5px 0 30px rgba(212, 160, 23, 0.3);
+    display: flex;
+    flex-direction: column;
+}
+
+.chat-side-panel.active {
+    right: 0;
+}
+
+/* Chat Panel Header */
+.chat-panel-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 20px;
+    background: linear-gradient(to right, var(--bg-tertiary), var(--bg-secondary));
+    border-bottom: 2px solid var(--accent-gold);
+}
+
+.chat-panel-title {
+    font-family: var(--font-display);
+    font-size: 1.3rem;
+    color: var(--accent-gold);
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.chat-panel-close {
+    background: none;
+    border: none;
+    font-size: 2rem;
+    color: var(--text-secondary);
+    cursor: pointer;
+    padding: 0;
+    line-height: 1;
+    transition: all 0.2s;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 8px;
+}
+
+.chat-panel-close:hover {
+    background: rgba(212, 160, 23, 0.15);
+    color: var(--accent-gold);
+    transform: rotate(90deg);
+}
+
+/* Chat Panel Messages */
+.chat-panel-messages {
+    flex: 1;
+    overflow-y: auto;
+    padding: 15px;
+    background: rgba(0, 0, 0, 0.2);
+}
+
+.chat-panel-messages::-webkit-scrollbar {
+    width: 8px;
+}
+
+.chat-panel-messages::-webkit-scrollbar-track {
+    background: var(--bg-primary);
+}
+
+.chat-panel-messages::-webkit-scrollbar-thumb {
+    background: var(--accent-gold);
+    border-radius: 4px;
+}
+
+/* Chat Panel Input */
+.chat-panel-input {
+    padding: 15px;
+    background: var(--bg-tertiary);
+    border-top: 1px solid #333;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.chat-channel-select {
+    display: flex;
+    gap: 8px;
+}
+
+.chat-channel-btn {
+    flex: 1;
+    padding: 8px 15px;
+    border-radius: 6px;
+    background: var(--bg-primary);
+    border: 1px solid #444;
+    color: var(--text-secondary);
+    cursor: pointer;
+    font-family: var(--font-display);
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    transition: all 0.2s;
+}
+
+.chat-channel-btn.active {
+    background: var(--accent-gold);
+    color: black;
+    border-color: var(--accent-gold);
+}
+
+.chat-input-row {
+    display: flex;
+    gap: 10px;
+}
+
+.chat-input-row input {
+    flex: 1;
+    padding: 10px 15px;
+    border-radius: 8px;
+    border: 1px solid #444;
+    background: var(--bg-primary);
+    color: var(--text-primary);
+    font-family: var(--font-body);
+    font-size: 0.9rem;
+}
+
+.chat-input-row input:focus {
+    outline: none;
+    border-color: var(--accent-gold);
+}
+
+.chat-send-btn {
+    padding: 10px 20px;
+    background: linear-gradient(135deg, var(--accent-gold), var(--accent-gold-bright));
+    color: black;
+    border: none;
+    border-radius: 8px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.2s;
+    font-family: var(--font-display);
+    text-transform: uppercase;
+}
+
+.chat-send-btn:hover {
+    transform: scale(1.05);
+    box-shadow: 0 0 20px rgba(212, 160, 23, 0.5);
+}
+
+.chat-send-btn:active {
+    transform: scale(0.95);
+}
+
+/* ===========================
+   CHAT MESSAGE STYLES
+   =========================== */
+
+.chat-message {
+    padding: 10px 12px;
+    margin-bottom: 8px;
+    background: rgba(30, 30, 40, 0.6);
+    border-radius: 8px;
+    border-left: 3px solid #444;
+    animation: slideInLeft 0.3s ease;
+}
+
+.chat-message.system {
+    border-left-color: var(--accent-gold);
+    background: rgba(212, 160, 23, 0.1);
+}
+
+.chat-message.trade {
+    border-left-color: var(--accent-info);
+}
+
+.chat-msg-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 4px;
+}
+
+.chat-msg-author {
+    font-family: var(--font-display);
+    font-weight: 700;
+    color: var(--accent-gold);
+    font-size: 0.85rem;
+}
+
+.chat-msg-time {
+    font-size: 0.7rem;
+    color: var(--text-muted);
+}
+
+.chat-msg-text {
+    color: var(--text-primary);
+    font-size: 0.9rem;
+    line-height: 1.4;
+    word-wrap: break-word;
+}
+
+/* Chat Empty State */
+.chat-empty-state {
+    text-align: center;
+    padding: 40px 20px;
+    color: var(--text-muted);
+}
+
+.chat-empty-state-icon {
+    font-size: 3rem;
+    margin-bottom: 15px;
+    opacity: 0.5;
+}

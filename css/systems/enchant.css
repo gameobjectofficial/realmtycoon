@@ -1,0 +1,258 @@
+/* ===================================
+   ENCHANT SYSTEM STYLES
+   =================================== */
+
+/* ===========================
+   ENCHANT CHAMBER
+   =========================== */
+
+.enchant-chamber {
+    max-width: 500px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+.enchant-item-display {
+    text-align: center;
+    padding: 30px;
+    background: linear-gradient(to bottom, #1a1a2e, #0a0a0f);
+    border: 2px solid var(--accent-purple);
+    border-radius: 12px;
+    margin-bottom: 20px;
+    position: relative;
+    overflow: hidden;
+}
+
+.enchant-item-display::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle, rgba(106, 13, 173, 0.2), transparent);
+    animation: enchantRotate 10s linear infinite;
+}
+
+.enchant-item-card {
+    position: relative;
+    z-index: 1;
+    display: inline-block;
+    animation: enchantFloat 3s ease-in-out infinite;
+}
+
+/* ===========================
+   ENCHANT PROGRESS TRACK
+   =========================== */
+
+.enchant-progress-track {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 20px 0;
+    padding: 15px;
+    background: var(--bg-secondary);
+    border-radius: 8px;
+    border: 1px solid #444;
+}
+
+.enchant-level-node {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: var(--bg-tertiary);
+    border: 2px solid #444;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--font-display);
+    font-weight: bold;
+    font-size: 0.9rem;
+    position: relative;
+}
+
+.enchant-level-node.completed {
+    background: var(--accent-success);
+    border-color: var(--accent-success);
+    color: black;
+}
+
+.enchant-level-node.current {
+    background: var(--accent-gold);
+    border-color: var(--accent-gold-bright);
+    color: black;
+    box-shadow: 0 0 20px rgba(212, 160, 23, 0.6);
+    animation: pulseGlow 1s infinite alternate;
+}
+
+.enchant-level-node.locked {
+    opacity: 0.4;
+}
+
+.enchant-level-line {
+    flex: 1;
+    height: 3px;
+    background: #444;
+    margin: 0 5px;
+}
+
+.enchant-level-line.completed {
+    background: var(--accent-success);
+}
+
+/* ===========================
+   ENCHANT STATS
+   =========================== */
+
+.enchant-stats {
+    background: var(--bg-secondary);
+    border: 1px solid #444;
+    border-radius: 8px;
+    padding: 15px;
+    margin-bottom: 15px;
+}
+
+.enchant-stat-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 0;
+    border-bottom: 1px solid #333;
+}
+
+.enchant-stat-row:last-child {
+    border-bottom: none;
+}
+
+.enchant-chance {
+    font-size: 1.1rem;
+    font-weight: bold;
+}
+
+.enchant-chance.high {
+    color: var(--accent-success);
+}
+
+.enchant-chance.medium {
+    color: var(--accent-warning);
+}
+
+.enchant-chance.low {
+    color: var(--accent-danger);
+}
+
+.enchant-cost {
+    color: var(--accent-gold);
+}
+
+/* ===========================
+   ENCHANT RISK & PROTECTION
+   =========================== */
+
+.enchant-risk {
+    background: rgba(139, 0, 0, 0.2);
+    border-left: 3px solid var(--accent-danger);
+    padding: 10px 15px;
+    border-radius: 4px;
+    margin: 15px 0;
+    font-size: 0.9rem;
+}
+
+.enchant-risk-title {
+    color: var(--accent-danger);
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+.enchant-protection {
+    background: rgba(0, 204, 255, 0.1);
+    border: 1px solid var(--accent-info);
+    border-radius: 8px;
+    padding: 15px;
+    margin: 15px 0;
+}
+
+.enchant-protection-title {
+    color: var(--accent-info);
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+.enchant-protection-desc {
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+}
+
+/* ===========================
+   ENCHANT BUTTON
+   =========================== */
+
+.btn-enchant {
+    width: 100%;
+    padding: 18px;
+    font-size: 1.2rem;
+    background: linear-gradient(to bottom, var(--accent-purple), #4a0a6e);
+    border: 2px solid var(--accent-purple);
+    color: white;
+    border-radius: 8px;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    box-shadow: 0 0 20px rgba(106, 13, 173, 0.4);
+    transition: all 0.3s ease;
+}
+
+.btn-enchant:hover:not(:disabled) {
+    background: linear-gradient(to bottom, #8a2be2, var(--accent-purple));
+    box-shadow: 0 0 30px rgba(138, 43, 226, 0.6);
+    transform: translateY(-2px);
+}
+
+.btn-enchant:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+/* ===========================
+   ENCHANT HISTORY
+   =========================== */
+
+.enchant-history {
+    margin-top: 20px;
+    padding: 15px;
+    background: var(--bg-secondary);
+    border-radius: 8px;
+    border: 1px solid #333;
+}
+
+.enchant-history-title {
+    font-family: var(--font-display);
+    font-size: 1rem;
+    color: var(--text-secondary);
+    margin-bottom: 10px;
+}
+
+.enchant-history-list {
+    max-height: 150px;
+    overflow-y: auto;
+}
+
+.enchant-history-entry {
+    display: flex;
+    justify-content: space-between;
+    padding: 6px 0;
+    border-bottom: 1px solid #222;
+    font-size: 0.85rem;
+}
+
+.enchant-history-entry:last-child {
+    border-bottom: none;
+}
+
+.enchant-success-entry {
+    color: var(--accent-success);
+}
+
+.enchant-fail-entry {
+    color: var(--accent-danger);
+}

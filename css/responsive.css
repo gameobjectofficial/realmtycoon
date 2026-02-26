@@ -1,0 +1,298 @@
+/* ===================================
+   RESPONSIVE STYLES
+   =================================== */
+
+/* ===========================
+   TABLET & BELOW (1024px)
+   =========================== */
+
+@media (max-width: 1024px) {
+    #game-container {
+        grid-template-columns: 1fr;
+        grid-template-areas:
+            "top"
+            "main"
+            "bottom";
+    }
+
+    #right-panel {
+        display: none;
+    }
+}
+
+/* ===========================
+   MOBILE (768px)
+   =========================== */
+
+@media (max-width: 768px) {
+    /* Combat Actions */
+    .combat-actions {
+        grid-template-columns: 1fr 1fr;
+    }
+
+    .btn-attack {
+        grid-column: 1 / -1;
+    }
+
+    /* Inventory Grid */
+    .inventory-grid {
+        grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
+        gap: 8px;
+    }
+
+    .inv-item-icon {
+        font-size: 2rem;
+    }
+
+    /* Enchant Progress */
+    .enchant-progress-track {
+        overflow-x: auto;
+    }
+
+    /* Town Map */
+    .town-map {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 10px;
+        padding: 10px;
+    }
+
+    /* Chat FAB */
+    .chat-fab {
+        bottom: 70px;
+        right: 15px;
+        width: 55px;
+        height: 55px;
+        font-size: 1.5rem;
+    }
+
+    /* Chat Side Panel */
+    .chat-side-panel {
+        width: 85vw;
+        right: -85vw;
+    }
+}
+
+/* ===========================
+   SMALL MOBILE (480px)
+   =========================== */
+
+@media (max-width: 480px) {
+    /* Top Bar Resources */
+    .resources-container {
+        gap: 10px;
+    }
+
+    .resource-item {
+        font-size: 0.85rem;
+    }
+
+    .resource-item img,
+    .resource-item span.icon {
+        font-size: 1rem;
+    }
+
+    /* Navigation */
+    .nav-item {
+        min-width: 60px;
+        padding: 6px 10px;
+        font-size: 0.65rem;
+    }
+
+    .nav-item .icon {
+        font-size: 1.3rem;
+    }
+
+    /* Modal Content */
+    .modal-content {
+        width: 95%;
+        padding: 20px;
+    }
+
+    /* Toast */
+    .toast {
+        min-width: 200px;
+        font-size: 0.85rem;
+    }
+
+    /* Combat Arena */
+    .combat-arena {
+        padding: 15px;
+    }
+
+    .battle-field {
+        grid-template-columns: 1fr 80px 1fr;
+        gap: 10px;
+    }
+
+    .character-sprite {
+        font-size: 3.5rem;
+    }
+
+    .health-bar-container {
+        height: 22px;
+    }
+
+    .health-bar-text {
+        font-size: 0.75rem;
+    }
+
+    /* Combat Actions - Stack vertically */
+    .combat-actions {
+        grid-template-columns: 1fr;
+    }
+
+    .combat-btn {
+        padding: 12px;
+    }
+
+    /* Category Cards */
+    .category-container {
+        grid-template-columns: 1fr;
+        gap: 15px;
+        padding: 15px;
+    }
+
+    .category-card {
+        min-height: 180px;
+        padding: 20px 15px;
+    }
+
+    .category-icon {
+        font-size: 3.5rem;
+    }
+
+    .category-name {
+        font-size: 1.2rem;
+    }
+
+    /* Town Building */
+    .town-building {
+        padding: 15px 8px;
+    }
+
+    .b-icon {
+        font-size: 2.5rem;
+    }
+
+    .b-name {
+        font-size: 0.95rem;
+    }
+
+    .b-level {
+        font-size: 0.75rem;
+    }
+
+    /* Upgrade Compare Grid */
+    .upgrade-compare-grid {
+        grid-template-columns: 1fr;
+        gap: 15px;
+    }
+
+    .upgrade-arrow {
+        transform: rotate(90deg);
+    }
+
+    /* Chest Rewards */
+    .chest-rewards-grid {
+        grid-template-columns: repeat(auto-fit, minmax(60px, 1fr));
+    }
+
+    .chest-item-card {
+        width: 90px;
+        padding: 8px;
+    }
+
+    .chest-item-card .item-icon {
+        font-size: 1.5rem;
+    }
+
+    /* Enchant Chamber */
+    .enchant-chamber {
+        padding: 15px;
+    }
+
+    .enchant-item-display {
+        padding: 20px;
+    }
+
+    .enchant-item-card {
+        animation: none;
+    }
+
+    /* Inventory */
+    .inventory-header {
+        flex-direction: column;
+        gap: 10px;
+        text-align: center;
+    }
+
+    .inventory-tabs {
+        justify-content: center;
+    }
+
+    /* Chat Panel */
+    .chat-panel-title {
+        font-size: 1.1rem;
+    }
+
+    .chat-channel-select {
+        flex-direction: column;
+    }
+
+    /* Dev Mode Indicator */
+    .dev-mode-indicator {
+        font-size: 0.75rem;
+        padding: 6px 10px;
+    }
+
+    /* Slide Panel */
+    .slide-panel {
+        width: 100%;
+        right: -100%;
+    }
+}
+
+/* ===========================
+   LARGE DESKTOP (1440px+)
+   =========================== */
+
+@media (min-width: 1440px) {
+    .inventory-grid {
+        grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+        gap: 16px;
+    }
+
+    .combat-arena {
+        max-width: 1100px;
+    }
+
+    .character-sprite {
+        font-size: 6rem;
+    }
+
+    .category-container {
+        grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    }
+}
+
+/* ===========================
+   ULTRA-WIDE (1920px+)
+   =========================== */
+
+@media (min-width: 1920px) {
+    body {
+        font-size: 18px;
+    }
+
+    .inventory-grid {
+        grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+    }
+
+    .combat-arena {
+        max-width: 1400px;
+    }
+
+    .character-sprite {
+        font-size: 7rem;
+    }
+}
