@@ -70,7 +70,7 @@ service cloud.firestore {
                       request.resource.data.timestamp is number &&
                       request.resource.data.channel is string;
 
-        // Prevent updates, allow delete for authenticated users (cleanup old messages)
+        // Prevent updates, allow delete for cleanup (old messages)
         allow update: if false;
         allow delete: if isAuthenticated();
       }

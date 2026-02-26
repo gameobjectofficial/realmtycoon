@@ -9673,39 +9673,8 @@
                 try {
                     const p = gameState.player;
 
-                    // FIX #8: Enable Cloud Functions for server-side leaderboard validation
-                    try {
-                        // Submit each category separately with server validation
-                        const submitScore = window.FB.httpsCallable(window.FB.functions, 'submitLeaderboardScore');
-
-                        // Submit gold score
-                        await submitScore({
-                            category: 'gold',
-                            value: Math.floor(p.gold),
-                            playerName: p.name
-                        });
-
-                        // Submit crafts score
-                        await submitScore({
-                            category: 'crafts',
-                            value: p.stats.totalItemsCrafted || 0,
-                            playerName: p.name
-                        });
-
-                        // Submit kills score
-                        await submitScore({
-                            category: 'kills',
-                            value: p.stats.monstersKilled || 0,
-                            playerName: p.name
-                        });
-
-                        return; // Success with Cloud Function
-                    } catch (fnError) {
-                        console.error('Cloud Function failed, falling back to client:', fnError);
-                        // Fall through to client-side if Cloud Function unavailable
-                    }
-
-                    // Fallback: Client-side update (less secure)
+                    // FIX #8: Use client-side StorageAPI (Cloud Functions require Blaze plan)
+                    // Direct write to leaderboard-data with checksum validation
                     let lb = await StorageAPI.get('leaderboard-data', true) || { gold: [], crafts: [], kills: [] };
                     ['gold', 'crafts', 'kills'].forEach(cat => {
                         if(!Array.isArray(lb[cat])) lb[cat] = [];
