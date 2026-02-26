@@ -4853,7 +4853,7 @@
 
                     // Track in analytics if available
                     if (typeof Analytics !== 'undefined') {
-                        Analytics.trackEvent('offline_session', {
+                        Analytics.track('offline_session', {
                             durationSeconds: offlineSeconds,
                             playerId: gameState.player?.id
                         });
@@ -9038,7 +9038,7 @@
                     if (isAccept) {
                         try {
                             // Call Cloud Function for server-side gold verification
-                            const acceptTrade = window.FB.functions.httpsCallable('acceptTrade');
+                            const acceptTrade = window.FB.httpsCallable(window.FB.functions, 'acceptTrade');
                             const result = await acceptTrade({
                                 tradeId: tradeId,
                                 targetId: targetDocId,
@@ -9594,7 +9594,7 @@
                     // FIX #8: Enable Cloud Functions for server-side leaderboard validation
                     try {
                         // Submit each category separately with server validation
-                        const submitScore = window.FB.functions.httpsCallable('submitLeaderboardScore');
+                        const submitScore = window.FB.httpsCallable(window.FB.functions, 'submitLeaderboardScore');
 
                         // Submit gold score
                         await submitScore({
