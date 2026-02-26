@@ -62,16 +62,17 @@ service cloud.firestore {
       // --- CHAT MESSAGES (Subcollection Architecture) ---
       match /chat-messages/{messageId} {
         allow read: if true;
-        
+
         allow create: if isAuthenticated() &&
                       request.resource.data.playerId == getUserId() &&
                       request.resource.data.playerName is string &&
                       request.resource.data.message is string &&
                       request.resource.data.timestamp is number &&
                       request.resource.data.channel is string;
-        
-        // Prevent updates and deletes (messages are immutable)
-        allow update, delete: if false;
+
+        // Prevent updates, allow delete for authenticated users (cleanup old messages)
+        allow update: if false;
+        allow delete: if isAuthenticated();
       }
 
       // Legacy chat-messages document (for backward compatibility during migration)
