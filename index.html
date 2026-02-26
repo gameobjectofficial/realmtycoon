@@ -8693,8 +8693,9 @@
                             message: `Item Sold: ${activeListing.item.subtype} for ${UI.formatNumber(expectedPrice)} Gold (Fee: ${UI.formatNumber(feeAmount)})`
                         });
 
-                        transaction.set(marketRef, { value: allListings }, { merge: true });
-                        transaction.set(inboxRef, { value: inbox }, { merge: true });
+                        // Use update instead of set to avoid precondition conflicts
+                        transaction.update(marketRef, { value: allListings });
+                        transaction.update(inboxRef, { value: inbox });
 
                         return activeListing; // Pass item back to local runtime
                     });
@@ -8725,10 +8726,10 @@
                 try {
                     // SECURITY FIX: Use transaction to prevent race condition and item duplication
                     const marketRef = window.FB.doc(window.FB.db, 'shared_data/market-listings');
-                    
+
                     const result = await window.FB.runTransaction(window.FB.db, async (transaction) => {
                         const marketDoc = await transaction.get(marketRef);
-                        
+
                         let allListings = marketDoc.exists() ? marketDoc.data().value || [] : [];
                         const listIndex = allListings.findIndex(l => l.listingId === listingId);
 
@@ -8743,13 +8744,14 @@
                         }
 
                         const listItem = allListings[listIndex].item;
-                        
+
                         // Mark as cancelled in Firestore (atomically)
                         allListings[listIndex].status = 'cancelled';
                         allListings[listIndex].cancelledAt = Date.now();
-                        
-                        transaction.set(marketRef, { value: allListings }, { merge: true });
-                        
+
+                        // Use update instead of set to avoid precondition conflicts
+                        transaction.update(marketRef, { value: allListings });
+
                         return { item: listItem, success: true };
                     });
 
