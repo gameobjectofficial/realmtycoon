@@ -2447,7 +2447,7 @@
                 setTimeout(() => {
                     // Apply resources
                     if(this.config.gold > 0 && gameState.player) {
-                        gameState.player.gold += this.config.gold;
+                        SecuritySys.addGold(this.config.gold);
                     }
                     if(this.config.iron > 0 && gameState.player) {
                         gameState.player.iron += this.config.iron;
@@ -4254,6 +4254,14 @@
             },
             async set(key, value, shared = false) {
                 if(!this.isReady) return;
+                
+                // Security check: Verify gold integrity before saving player data
+                if(key === 'player-data' && typeof SecuritySys !== 'undefined' && !SecuritySys.verify()) {
+                    console.error("⛔ SECURITY ALERT: Data manipulation detected before save!");
+                    SecuritySys.punishCheater();
+                    return; // Cancel save operation
+                }
+                
                 try {
                     let docRef;
                     if(shared) {
@@ -4444,6 +4452,68 @@
                 } catch (error) {
                     Logger.error('GameStateManager', error, 'Failed to import state');
                 }
+            }
+        };
+
+        // ========================================
+        // SECURITY SYSTEM - ANTI-CHEAT ENGINE
+        // ========================================
+        const SecuritySys = {
+            // SECRET SALT - Known only to you
+            SECRET_SALT: "R3alm_Tyc00n_AntiCh3at_2026_!xQp9",
+            _goldSignature: "",
+
+            // 1. Signature Generator
+            generateSignature: function(amount) {
+                let str = amount.toString() + this.SECRET_SALT;
+                let hash = 0;
+                for (let i = 0; i < str.length; i++) {
+                    let char = str.charCodeAt(i);
+                    hash = ((hash << 5) - hash) + char;
+                    hash = hash & hash; // Convert to 32-bit integer
+                }
+                return hash.toString(16); // Return as hexadecimal
+            },
+
+            // 2. Initialize engine when game loads
+            initEngine: function(initialGold) {
+                this._goldSignature = this.generateSignature(initialGold);
+            },
+
+            // 3. SECURE GOLD ADD (Use instead of direct +=)
+            addGold: function(amount) {
+                if (!this.verify()) return this.punishCheater();
+                
+                gameState.player.gold += amount;
+                this._goldSignature = this.generateSignature(gameState.player.gold); // Update signature
+            },
+
+            // 4. SECURE GOLD SPEND (Use instead of direct -=)
+            spendGold: function(amount) {
+                if (!this.verify()) return this.punishCheater();
+
+                if (gameState.player.gold >= amount) {
+                    gameState.player.gold -= amount;
+                    this._goldSignature = this.generateSignature(gameState.player.gold); // Update signature
+                    return true; // Spend successful
+                }
+                return false; // Insufficient gold
+            },
+
+            // 5. VERIFICATION (Is the displayed gold signature correct?)
+            verify: function() {
+                // If current gold signature doesn't match stored signature, cheating detected!
+                return this._goldSignature === this.generateSignature(gameState.player.gold);
+            },
+
+            // 6. PUNISH CHEATER
+            punishCheater: function() {
+                console.error("⛔ SECURITY ALERT: Data manipulation detected!");
+                // Zero out cheater's gold and reset signature
+                gameState.player.gold = 0; 
+                this._goldSignature = this.generateSignature(0);
+                alert("Oyun verilerinde tutarsızlık tespit edildi. Altın miktarınız sıfırlandı!");
+                return false;
             }
         };
 
@@ -4824,6 +4894,9 @@
                 // Level system patch
                 if(p.level === undefined) p.level = 1;
                 if(p.xp === undefined) p.xp = 0;
+
+                // Initialize security system with current gold
+                SecuritySys.initEngine(gameState.player.gold);
 
                 UI.gameContainer.classList.remove('hidden');
                 BuildingSystem.renderList();
@@ -6168,7 +6241,7 @@
                 else if(key === 'crystal_cavern'){ resType = 'crystal'; resReward = Math.floor(2  * lvl * lootMult * buildingBonus); goldReward = Math.floor(lvl * 50 * lootMult * buildingBonus); }
 
                 gameState.player[resType] += resReward;
-                gameState.player.gold += goldReward;
+                SecuritySys.addGold(goldReward);
                 gameState.player.stats.totalGoldEarned = (gameState.player.stats.totalGoldEarned || 0) + goldReward;
                 AchievementSystem.check('totalGoldEarned', gameState.player.stats.totalGoldEarned);
 
@@ -6548,7 +6621,7 @@
                 chest.opened = true;
 
                 // Add resources to player
-                gameState.player.gold += loot.resources.gold;
+                SecuritySys.addGold(loot.resources.gold);
                 gameState.player.wood += loot.resources.wood;
                 gameState.player.iron += loot.resources.iron;
                 gameState.player.crystal += loot.resources.crystal;
@@ -6579,7 +6652,7 @@
                 if (chest.category !== 'chest') return false;
 
                 const chestTier = CHEST_TIERS[chest.chestTier];
-                gameState.player.gold += chestTier.sellPrice;
+                SecuritySys.addGold(chestTier.sellPrice);
 
                 gameState.inventory.splice(chestIndex, 1);
                 PlayerSystem.save();
@@ -6837,7 +6910,10 @@
                 gameState.player.iron -= cat.cost.iron;
                 gameState.player.wood -= cat.cost.wood;
                 gameState.player.crystal -= cat.cost.crystal;
-                gameState.player.gold -= cat.cost.gold;
+                if(!SecuritySys.spendGold(cat.cost.gold)) {
+                    UI.showToast("Yetersiz altın!", "error");
+                    return;
+                }
                 PlayerSystem.updateUI();
 
                 // Start timer
@@ -8653,7 +8729,10 @@
                     });
 
                     // Transaction successful! Process local state changes
-                    gameState.player.gold -= expectedPrice;
+                    if(!SecuritySys.spendGold(expectedPrice)) {
+                        UI.showToast("Yetersiz altın!", "error");
+                        return;
+                    }
 
                     const boughtItem = boughtListingData.item;
                     boughtItem.tradeHistory.push({ from: boughtListingData.sellerId, to: gameState.player.id, price: expectedPrice, date: Date.now() });
@@ -8879,9 +8958,12 @@
                         
                         transaction.set(docRef, { value: newTrade }, { merge: true });
                     });
-                    
+
                     // After successful transaction, deduct resources locally
-                    gameState.player.gold -= offerGold;
+                    if(!SecuritySys.spendGold(offerGold)) {
+                        UI.showToast("Yetersiz altın!", "error");
+                        return;
+                    }
                     if(offerItem) {
                         gameState.inventory = gameState.inventory.filter(i => i.id !== offerItem.id);
                     }
@@ -9107,8 +9189,8 @@
                         transaction.set(inboxRef, { value: inbox }, { merge: true });
 
                         // Distribute to target (US) locally
-                        gameState.player.gold -= trd.reqGold;
-                        gameState.player.gold += trd.offerGold;
+                        SecuritySys.spendGold(trd.reqGold);
+                        SecuritySys.addGold(trd.offerGold);
                         if(trd.offerItem) {
                             trd.offerItem.tradeHistory.push({ from: trd.senderId, to: gameState.player.id, price: trd.reqGold, date: Date.now() });
                             // FIX #10: Use centralized addToInventory for limit check consistency
@@ -9202,8 +9284,8 @@
                             gameState.player.newItemCount = (gameState.player.newItemCount || 0) + 1;
                         }
                     });
-                    
-                    gameState.player.gold += totalGold;
+
+                    SecuritySys.addGold(totalGold);
                     gameState.player.gems += totalGems;
                     this.updateUI();
                     if(returnedItems.length > 0) {
